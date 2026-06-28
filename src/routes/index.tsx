@@ -83,7 +83,7 @@ function LandingPage() {
         <section id="order" className="bg-secondary/40 py-20 sm:py-24">
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-foreground/70">
+              <p className="text-[11px] font-bold uppercase tracking-[0.25em] text-accent">
                 Order yours
               </p>
               <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">

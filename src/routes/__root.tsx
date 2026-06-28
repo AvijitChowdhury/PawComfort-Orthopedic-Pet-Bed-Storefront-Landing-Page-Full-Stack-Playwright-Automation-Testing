@@ -86,7 +86,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "PawComfort™ orthopedic memory foam pet bed with washable cover, waterproof liner and non-slip base. Free shipping and 30-day comfort guarantee.",
       },
       { name: "author", content: "PawComfort" },
-      { property: "og:title", content: "PawComfort™ Orthopedic Pet Bed" },
+      { property: "og:title", content: "PawComfort™ Orthopedic Pet Bed — Memory Foam Comfort for Every Pet" },
       {
         property: "og:description",
         content:
@@ -94,11 +94,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "PawComfort™ Orthopedic Pet Bed" },
+      { name: "twitter:title", content: "PawComfort™ Orthopedic Pet Bed — Memory Foam Comfort for Every Pet" },
       {
         name: "twitter:description",
         content: "Premium orthopedic memory foam bed for dogs and cats.",
       },
+      { name: "description", content: "Your Daily Smile is a personal journaling app for capturing and reflecting on positive moments." },
+      { property: "og:description", content: "Your Daily Smile is a personal journaling app for capturing and reflecting on positive moments." },
+      { name: "twitter:description", content: "Your Daily Smile is a personal journaling app for capturing and reflecting on positive moments." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/0d13a659-a0a4-42de-ad2d-50c01e2c6f31" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/0d13a659-a0a4-42de-ad2d-50c01e2c6f31" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

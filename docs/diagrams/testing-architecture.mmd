@@ -1,0 +1,36 @@
+graph LR
+  subgraph Dev["Local / CI Runner"]
+    Pytest[pytest + pytest-asyncio<br/>tests/e2e/test_pawcomfort.py]
+    Conf[conftest.py<br/>session browser fixture]
+    Allure[allure-pytest reporter]
+  end
+
+  subgraph Browser["Playwright Chromium (headless)"]
+    Ctx[Browser Context<br/>1280x1800 viewport]
+    Page[Page Instance<br/>per-test]
+  end
+
+  subgraph Suites["Test Suites"]
+    S1[TestLanding<br/>hero • sections • reviews • faq]
+    S2[TestOrders<br/>COD checkout e2e]
+    S3[TestAuth<br/>admin sign-in]
+    S4[TestAdminDashboard<br/>orders • reviews • products • settings]
+    S5[TestSecurity<br/>route guard redirect]
+  end
+
+  subgraph App["System Under Test"]
+    SUT[localhost:8080<br/>TanStack Start dev server]
+    Supa[(Lovable Cloud<br/>Supabase Postgres)]
+  end
+
+  subgraph Artifacts["Reporting Artifacts"]
+    Shots[PNG Screenshots<br/>/mnt/documents/pawcomfort/screenshots]
+    Results[allure-results/*.json]
+    Report[allure-report/index.html]
+  end
+
+  Pytest --> Conf --> Ctx --> Page
+  Pytest --> S1 & S2 & S3 & S4 & S5
+  S1 & S2 & S3 & S4 & S5 --> Page --> SUT --> Supa
+  Page -->|snap| Shots --> Allure
+  Pytest --> Allure --> Results --> Report

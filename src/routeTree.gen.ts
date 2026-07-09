@@ -13,6 +13,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogAreOrthopedicDogBedsWorthItRouteImport } from './routes/blog.are-orthopedic-dog-beds-worth-it'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -34,6 +35,12 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogAreOrthopedicDogBedsWorthItRoute =
+  BlogAreOrthopedicDogBedsWorthItRouteImport.update({
+    id: '/blog/are-orthopedic-dog-beds-worth-it',
+    path: '/blog/are-orthopedic-dog-beds-worth-it',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -45,12 +52,14 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/blog/are-orthopedic-dog-beds-worth-it': typeof BlogAreOrthopedicDogBedsWorthItRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/blog/are-orthopedic-dog-beds-worth-it': typeof BlogAreOrthopedicDogBedsWorthItRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -59,12 +68,23 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/blog/are-orthopedic-dog-beds-worth-it': typeof BlogAreOrthopedicDogBedsWorthItRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/sitemap.xml' | '/admin'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/sitemap.xml'
+    | '/admin'
+    | '/blog/are-orthopedic-dog-beds-worth-it'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/sitemap.xml' | '/admin'
+  to:
+    | '/'
+    | '/auth'
+    | '/sitemap.xml'
+    | '/admin'
+    | '/blog/are-orthopedic-dog-beds-worth-it'
   id:
     | '__root__'
     | '/'
@@ -72,6 +92,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/sitemap.xml'
     | '/_authenticated/admin'
+    | '/blog/are-orthopedic-dog-beds-worth-it'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -79,6 +100,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  BlogAreOrthopedicDogBedsWorthItRoute: typeof BlogAreOrthopedicDogBedsWorthItRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -111,6 +133,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/are-orthopedic-dog-beds-worth-it': {
+      id: '/blog/are-orthopedic-dog-beds-worth-it'
+      path: '/blog/are-orthopedic-dog-beds-worth-it'
+      fullPath: '/blog/are-orthopedic-dog-beds-worth-it'
+      preLoaderRoute: typeof BlogAreOrthopedicDogBedsWorthItRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
@@ -137,6 +166,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  BlogAreOrthopedicDogBedsWorthItRoute: BlogAreOrthopedicDogBedsWorthItRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

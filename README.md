@@ -40,6 +40,91 @@
 
 ---
 
+## 🏛️ System Architecture
+
+End-to-end request path from browser to Lovable Cloud Postgres. SSR runs on a Cloudflare Worker; app-internal writes go through typed `createServerFn` handlers guarded by `requireSupabaseAuth`, and every order write is re-derived server-side by a Postgres trigger so client-supplied totals cannot be trusted.
+
+```mermaid
+graph TB
+  subgraph Client["Browser · React 19 + Vite 7"]
+    UI[Landing / Order / Blog Routes]
+    Admin[Admin Dashboard<br/>Orders • Reviews • Products • Settings]
+    Auth[Auth Route<br/>Email + Password]
+  end
+
+  subgraph Edge["Cloudflare Worker · TanStack Start SSR"]
+    Root[__root.tsx<br/>SEO head • error boundary]
+    SSR[Route Loaders<br/>ensureQueryData]
+    ServerFn[createServerFn<br/>+ requireSupabaseAuth]
+    ApiPublic[/api/public/*<br/>webhooks • sitemap.xml/]
+  end
+
+  subgraph Cloud["Lovable Cloud · Supabase"]
+    DB[(Postgres<br/>orders • products • testimonials<br/>user_roles • settings)]
+    RLS[RLS Policies<br/>has_role security definer]
+    Trigger[trg_orders_enforce_integrity<br/>server-derived total_price]
+    AuthSvc[Auth Service<br/>JWT sessions]
+  end
+
+  UI -->|form submit| ServerFn
+  Admin -->|queries| ServerFn
+  Auth --> AuthSvc
+  UI --> Root --> SSR
+  SSR --> DB
+  ServerFn --> DB
+  DB --> Trigger
+  DB --> RLS
+  ApiPublic --> DB
+```
+
+---
+
+## 🧪 Testing Architecture
+
+Playwright (Python) drives a headless Chromium against the live TanStack Start dev server on `localhost:8080`. Every test emits screenshots and Allure result JSON; `allure generate` compiles them into a browsable HTML report.
+
+```mermaid
+graph LR
+  subgraph Dev["Local / CI Runner"]
+    Pytest[pytest + pytest-asyncio<br/>tests/e2e/test_pawcomfort.py]
+    Conf[conftest.py<br/>session browser fixture]
+    Allure[allure-pytest reporter]
+  end
+
+  subgraph Browser["Playwright Chromium · headless"]
+    Ctx[Browser Context<br/>1280x1800 viewport]
+    Page[Page Instance · per-test]
+  end
+
+  subgraph Suites["Test Suites"]
+    S1[TestLanding<br/>hero • sections • reviews • faq]
+    S2[TestOrders<br/>COD checkout e2e]
+    S3[TestAuth · admin sign-in]
+    S4[TestAdminDashboard<br/>orders • reviews • products • settings]
+    S5[TestSecurity · route guard redirect]
+  end
+
+  subgraph App["System Under Test"]
+    SUT[localhost:8080<br/>TanStack Start dev]
+    Supa[(Lovable Cloud · Postgres)]
+  end
+
+  subgraph Artifacts["Reporting Artifacts"]
+    Shots[PNG Screenshots<br/>docs/screenshots]
+    Results[allure-results/*.json]
+    Report[allure-report/index.html]
+  end
+
+  Pytest --> Conf --> Ctx --> Page
+  Pytest --> S1 & S2 & S3 & S4 & S5
+  S1 & S2 & S3 & S4 & S5 --> Page --> SUT --> Supa
+  Page -->|snap| Shots --> Allure
+  Pytest --> Allure --> Results --> Report
+```
+
+---
+
+
 ## 🎨 Design Direction — Midnight Sage & Copper Luxe
 
 Editorial, calm, high-end. Deep sage anchor with copper accents on a warm off-white.

@@ -1,0 +1,30 @@
+graph TB
+  subgraph Client["Browser (React 19 + Vite 7)"]
+    UI[Landing / Order / Blog Routes]
+    Admin[Admin Dashboard<br/>Orders • Reviews • Products • Settings]
+    Auth[Auth Route<br/>Email + Password]
+  end
+
+  subgraph Edge["Cloudflare Worker (TanStack Start SSR)"]
+    Root[__root.tsx<br/>SEO head • error boundary]
+    SSR[Route Loaders<br/>ensureQueryData]
+    ServerFn[createServerFn<br/>+ requireSupabaseAuth]
+    ApiPublic[/api/public/*<br/>webhooks • sitemap.xml/]
+  end
+
+  subgraph Cloud["Lovable Cloud (Supabase)"]
+    DB[(Postgres<br/>orders • products • testimonials<br/>user_roles • settings)]
+    RLS[RLS Policies<br/>has_role security definer]
+    Trigger[trg_orders_enforce_integrity<br/>server-derived total_price]
+    AuthSvc[Auth Service<br/>JWT sessions]
+  end
+
+  UI -->|form submit| ServerFn
+  Admin -->|queries| ServerFn
+  Auth --> AuthSvc
+  UI --> Root --> SSR
+  SSR --> DB
+  ServerFn --> DB
+  DB --> Trigger
+  DB --> RLS
+  ApiPublic --> DB

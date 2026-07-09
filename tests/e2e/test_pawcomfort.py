@@ -33,14 +33,14 @@ class TestLanding:
     @allure.title("Hero section renders with product headline & CTA")
     @pytest.mark.asyncio
     async def test_hero(self, page):
-        await page.goto(BASE_URL, wait_until="networkidle")
+        await page.goto(BASE_URL, wait_until="domcontentloaded")
         await expect(page.locator("h1").first).to_be_visible()
         await snap(page, "01_landing_hero")
 
     @allure.title("Gallery, features, sizes & colors sections load")
     @pytest.mark.asyncio
     async def test_sections(self, page):
-        await page.goto(BASE_URL, wait_until="networkidle")
+        await page.goto(BASE_URL, wait_until="domcontentloaded")
         await page.evaluate("window.scrollTo(0, 900)")
         await asyncio.sleep(0.5)
         await snap(page, "02_landing_gallery_features")
@@ -51,7 +51,7 @@ class TestLanding:
     @allure.title("Reviews and FAQ sections visible")
     @pytest.mark.asyncio
     async def test_reviews_faq(self, page):
-        await page.goto(BASE_URL, wait_until="networkidle")
+        await page.goto(BASE_URL, wait_until="domcontentloaded")
         await page.evaluate("window.scrollTo(0, document.body.scrollHeight * 0.6)")
         await asyncio.sleep(0.6)
         await snap(page, "04_landing_reviews")
@@ -66,7 +66,7 @@ class TestOrders:
     @allure.title("Customer places a Cash-on-Delivery order end-to-end")
     @pytest.mark.asyncio
     async def test_place_order(self, page):
-        await page.goto(BASE_URL, wait_until="networkidle")
+        await page.goto(BASE_URL, wait_until="domcontentloaded")
         await page.evaluate("document.getElementById('order')?.scrollIntoView()")
         await asyncio.sleep(0.6)
         await snap(page, "06_order_form_empty")
@@ -86,7 +86,7 @@ class TestAuth:
     @allure.title("Admin sign-in with valid credentials")
     @pytest.mark.asyncio
     async def test_admin_login(self, page):
-        await page.goto(f"{BASE_URL}/auth", wait_until="networkidle")
+        await page.goto(f"{BASE_URL}/auth", wait_until="domcontentloaded")
         await snap(page, "09_auth_page")
         await page.fill("#email", ADMIN_EMAIL)
         await page.fill("#password", ADMIN_PASS)
@@ -100,7 +100,7 @@ class TestAuth:
 @allure.feature("Dashboard")
 class TestAdminDashboard:
     async def _login(self, page):
-        await page.goto(f"{BASE_URL}/auth", wait_until="networkidle")
+        await page.goto(f"{BASE_URL}/auth", wait_until="domcontentloaded")
         await page.fill("#email", ADMIN_EMAIL)
         await page.fill("#password", ADMIN_PASS)
         await page.click("button[type=submit]")
@@ -151,7 +151,7 @@ class TestSecurity:
         await ctx.clear_cookies()
         await page.goto(BASE_URL)
         await page.evaluate("localStorage.clear()")
-        await page.goto(f"{BASE_URL}/admin", wait_until="networkidle")
+        await page.goto(f"{BASE_URL}/admin", wait_until="domcontentloaded")
         await asyncio.sleep(1)
         assert "/auth" in page.url, f"Expected redirect to /auth, got {page.url}"
         await snap(page, "15_auth_guard_redirect")

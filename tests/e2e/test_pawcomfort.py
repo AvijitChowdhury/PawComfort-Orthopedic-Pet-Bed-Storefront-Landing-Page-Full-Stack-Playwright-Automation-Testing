@@ -25,27 +25,6 @@ async def snap(page: Page, name: str):
     return path
 
 
-@pytest.fixture(scope="session")
-def event_loop():
-    loop = asyncio.new_event_loop()
-    yield loop
-    loop.close()
-
-
-@pytest.fixture(scope="session")
-async def browser_ctx():
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
-        ctx = await browser.new_context(viewport={"width": 1280, "height": 1800})
-        yield ctx
-        await browser.close()
-
-
-@pytest.fixture
-async def page(browser_ctx):
-    page = await browser_ctx.new_page()
-    yield page
-    await page.close()
 
 
 @allure.epic("PawComfort Storefront")

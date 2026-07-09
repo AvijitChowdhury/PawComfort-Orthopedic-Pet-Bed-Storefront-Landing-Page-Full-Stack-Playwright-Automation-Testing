@@ -55,6 +55,9 @@ export function Hero({ product }: { product: Product }) {
           <h1 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             {product.name.replace("™", "")}
             <span className="align-super text-2xl">™</span>
+            <span className="mt-2 block font-sans text-lg font-medium uppercase tracking-[0.2em] text-muted-foreground sm:text-xl">
+              Orthopedic Memory Foam Pet Bed
+            </span>
           </h1>
           <p className="mt-5 max-w-xl text-lg text-muted-foreground">{product.tagline}</p>
 
@@ -106,6 +109,7 @@ export function Hero({ product }: { product: Product }) {
               src={heroBed}
               width={1600}
               height={1200}
+              fetchPriority="high"
               alt="Golden retriever sleeping peacefully on a PawComfort orthopedic memory foam bed in a sunlit living room"
               className="h-full w-full object-cover"
             />
@@ -300,9 +304,13 @@ export function Compare() {
 // =================== REVIEWS ===================
 function Stars({ rating }: { rating: number }) {
   return (
-    <div className="flex gap-0.5">
+    <div className="flex gap-0.5" role="img" aria-label={`${rating} out of 5 stars`}>
       {Array.from({ length: 5 }).map((_, i) => (
-        <Star key={i} className={`h-4 w-4 ${i < rating ? "fill-accent text-accent" : "text-muted-foreground/30"}`} />
+        <Star
+          key={i}
+          aria-hidden="true"
+          className={`h-4 w-4 ${i < rating ? "fill-accent text-accent" : "text-muted-foreground/30"}`}
+        />
       ))}
     </div>
   );

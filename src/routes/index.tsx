@@ -12,35 +12,67 @@ export const Route = createFileRoute("/")({
   loader: ({ context }) => context.queryClient.ensureQueryData(landingQueryOptions),
   component: LandingPage,
   pendingComponent: PageSkeleton,
-  head: () => ({
-    meta: [
-      { title: "PawComfort™ Orthopedic Pet Bed — Memory Foam Comfort for Every Pet" },
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Product",
-          name: "PawComfort™ Orthopedic Pet Bed",
-          description:
-            "Premium orthopedic memory foam pet bed with washable cover, waterproof liner and non-slip base.",
-          brand: { "@type": "Brand", name: "PawComfort" },
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "4.9",
-            reviewCount: "1287",
-          },
-          offers: {
-            "@type": "Offer",
-            priceCurrency: "USD",
-            price: "59",
-            availability: "https://schema.org/InStock",
-          },
-        }),
-      },
-    ],
-  }),
+  head: ({ loaderData }) => {
+    const url = "https://pawcomfortavijit.lovable.app/";
+    const title = "PawComfort™ Orthopedic Pet Bed | Memory Foam";
+    const description =
+      "Premium orthopedic memory foam bed for dogs and cats. Washable cover, waterproof liner, non-slip base. Free shipping and 30-day comfort guarantee.";
+    const faqs = loaderData?.faqs ?? [];
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "website" },
+        { property: "og:url", content: url },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: "PawComfort™ Orthopedic Pet Bed",
+            description:
+              "Premium orthopedic memory foam pet bed with washable cover, waterproof liner and non-slip base.",
+            brand: { "@type": "Brand", name: "PawComfort" },
+            aggregateRating: {
+              "@type": "AggregateRating",
+              ratingValue: "4.9",
+              reviewCount: "1287",
+            },
+            offers: {
+              "@type": "Offer",
+              priceCurrency: "USD",
+              price: "59",
+              availability: "https://schema.org/InStock",
+            },
+          }),
+        },
+        ...(faqs.length > 0
+          ? [
+              {
+                type: "application/ld+json",
+                children: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  mainEntity: faqs.map((f) => ({
+                    "@type": "Question",
+                    name: f.question,
+                    acceptedAnswer: { "@type": "Answer", text: f.answer },
+                  })),
+                }),
+              },
+            ]
+          : []),
+      ],
+    };
+  },
 });
 
 function PageSkeleton() {

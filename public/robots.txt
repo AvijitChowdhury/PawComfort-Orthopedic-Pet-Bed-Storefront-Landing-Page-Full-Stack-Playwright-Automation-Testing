@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pawcomfortavijit.lovable.app/sitemap.xml

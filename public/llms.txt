@@ -1,0 +1,9 @@
+# PawComfort
+
+> Premium orthopedic memory foam pet bed for dogs and cats — washable cover, waterproof liner, non-slip base. Free shipping and a 30-day comfort guarantee.
+
+PawComfort sells a single flagship product: the PawComfort™ Orthopedic Pet Bed. The landing page covers features, sizes, colors, reviews, FAQ, pricing, and a guest-checkout order form (Cash on Delivery or Bank Transfer).
+
+## Pages
+
+- [Home](/): Product overview, features, sizes, colors, reviews, FAQ, pricing and order form.
